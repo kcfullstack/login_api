@@ -1,0 +1,169 @@
+{
+  "info": {
+    "_postman_id": "auth-service-v1-collection",
+    "name": "Auth Service - OAuth2 & User Microservice",
+    "description": "Production-ready Postman collection for testing the Spring Boot 3.3.x OAuth2 Authentication Microservice.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "jwtToken",
+      "value": "YOUR_BEARER_TOKEN_HERE",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Public Endpoints",
+      "item": [
+        {
+          "name": "Check Health & Auth Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "status"]
+            },
+            "description": "Public endpoint checking microservice health and whether the current session is authenticated."
+          },
+          "response": []
+        },
+        {
+          "name": "List Configured OAuth2 Providers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/providers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "providers"]
+            },
+            "description": "Returns authorization flow initiation endpoints for configured providers (Google, GitHub)."
+          },
+          "response": []
+        },
+        {
+          "name": "OpenAPI Specification (JSON)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v3/api-docs",
+              "host": ["{{baseUrl}}"],
+              "path": ["v3", "api-docs"]
+            },
+            "description": "Returns the complete OpenAPI 3.0 specification."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. OAuth2 Authorization Initiation",
+      "item": [
+        {
+          "name": "Initiate Google OAuth2 Flow",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/oauth2/authorization/google",
+              "host": ["{{baseUrl}}"],
+              "path": ["oauth2", "authorization", "google"]
+            },
+            "description": "Initiates redirect to Google Accounts sign-in page."
+          },
+          "response": []
+        },
+        {
+          "name": "Initiate GitHub OAuth2 Flow",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/oauth2/authorization/github",
+              "host": ["{{baseUrl}}"],
+              "path": ["oauth2", "authorization", "github"]
+            },
+            "description": "Initiates redirect to GitHub authorization page."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. Authenticated User Endpoints",
+      "item": [
+        {
+          "name": "Get Authenticated User (/api/v1/auth/user)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/user",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "user"]
+            },
+            "description": "Retrieves the currently authenticated user details using Session Cookie (JSESSIONID) or Bearer JWT token."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Authenticated User - Alias (/user)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user",
+              "host": ["{{baseUrl}}"],
+              "path": ["user"]
+            },
+            "description": "Standard alias for authenticated user profile."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout Session",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "logout"]
+            },
+            "description": "Logs out current session, invalidates JSESSIONID, and clears security context."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
